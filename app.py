@@ -93,10 +93,10 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
     try:
-         st.write("File size:", len(uploaded_file.getvalue()))
-         st.write("File preview:", uploaded_file.getvalue()[:200])
-        
-         result = analyze_email(uploaded_file.getvalue())
+        st.write("File size:", len(uploaded_file.getvalue()))
+        st.write("File preview:", uploaded_file.getvalue()[:200])
+
+        result = analyze_email(uploaded_file.getvalue())
 
         st.subheader("Investigation Results")
 
