@@ -4,6 +4,7 @@ import re
 from email.parser import BytesParser
 from urllib.parse import urlparse
 
+# Page configuration
 st.set_page_config(
     page_title="Phishing Email Triage Analyzer",
     page_icon="🛡️",
@@ -16,7 +17,9 @@ st.write(
 )
 
 
+# Email analysis function
 def analyze_email(file_bytes):
+
     file_bytes = file_bytes.lstrip()
     msg = BytesParser().parsebytes(file_bytes)
 
@@ -28,7 +31,9 @@ def analyze_email(file_bytes):
     body = ""
     attachments = []
 
+    # Extract email body and attachment names
     for part in msg.walk():
+
         filename = part.get_filename()
 
         if filename:
@@ -40,13 +45,13 @@ def analyze_email(file_bytes):
             except Exception:
                 pass
 
-    
+ 
     email_text = file_bytes.decode("utf-8", errors="ignore")
 
     urls = re.findall(
-    r'https?://[^\s<>"]+',
-    email_text
-)
+        r'https?://[^\s<>"]+',
+        email_text
+    )
 
     findings = []
     score = 0
@@ -55,7 +60,7 @@ def analyze_email(file_bytes):
         findings.append("Reply-To differs from the displayed sender.")
         score += 15
 
-    
+
     if "spf=fail" in auth_results.lower():
         findings.append("SPF authentication failure reported.")
         score += 20
@@ -70,6 +75,7 @@ def analyze_email(file_bytes):
 
     # Check URLs for IP addresses
     for url in urls:
+
         domain = urlparse(url).hostname or ""
 
         if re.match(r'\d{1,3}(\.\d{1,3}){3}', domain):
@@ -85,6 +91,7 @@ def analyze_email(file_bytes):
 
     score = min(score, 100)
 
+   
     if score >= 60:
         risk = "High"
     elif score >= 25:
@@ -104,15 +111,20 @@ def analyze_email(file_bytes):
     }
 
 
+
 uploaded_file = st.file_uploader(
     "Upload an email file (.eml)",
     type=["eml"]
 )
 
+
 if uploaded_file:
+
     try:
+
         result = analyze_email(uploaded_file.getvalue())
 
+        # Investigation results
         st.subheader("Investigation Results")
 
         col1, col2 = st.columns(2)
@@ -124,11 +136,48 @@ if uploaded_file:
         st.write("**Sender:**", result["sender"])
         st.write("**Reply-To:**", result["reply_to"])
 
+        # Generate investigation report
+        report = f"""
+PHISHING EMAIL INVESTIGATION REPORT
+==================================
+
+Subject: {result["subject"]}
+Sender: {result["sender"]}
+Reply-To: {result["reply_to"]}
+
+Risk Score: {result["score"]}/100
+Risk Level: {result["risk"]}
+
+SECURITY FINDINGS
+-----------------
+{chr(10).join(result["findings"])}
+
+URLS FOUND
+----------
+{chr(10).join(result["urls"]) if result["urls"] else "No URLs found."}
+
+ATTACHMENTS
+-----------
+{chr(10).join(result["attachments"]) if result["attachments"] else "No attachments found."}
+
+Note: This is an educational triage report.
+It does not guarantee that an email is safe.
+"""
+
+      
+        st.download_button(
+            label="📥 Download Investigation Report",
+            data=report,
+            file_name="email_investigation_report.txt",
+            mime="text/plain"
+        )
+
         st.subheader("Security Findings")
 
         for finding in result["findings"]:
             st.write("•", finding)
 
+    
         st.subheader("URLs Found")
 
         if result["urls"]:
