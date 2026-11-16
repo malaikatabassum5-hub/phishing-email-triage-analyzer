@@ -63,6 +63,10 @@ Upload an `.eml` file to view the analysis results.
 - Understand introductory SOC triage workflows.
 - Learn Python-based security automation.
 
+  ## Application Screenshot
+
+![Phishing Email Triage Analyzer](phishing-analysis-results.png)
+
 ## 🔐 Safety & Limitations
 
 This project is intended for educational and defensive security purposes.
