@@ -40,18 +40,22 @@ def analyze_email(file_bytes):
             except Exception:
                 pass
 
-    # Extract URLs from the email body
-    urls = re.findall(r'https?://[^\s<>"]+', body)
+    
+    email_text = file_bytes.decode("utf-8", errors="ignore")
+
+    urls = re.findall(
+    r'https?://[^\s<>"]+',
+    email_text
+)
 
     findings = []
     score = 0
 
-    # Check Reply-To mismatch
     if reply_to != "Not available" and reply_to.lower() != sender.lower():
         findings.append("Reply-To differs from the displayed sender.")
         score += 15
 
-    # Check email authentication results
+    
     if "spf=fail" in auth_results.lower():
         findings.append("SPF authentication failure reported.")
         score += 20
