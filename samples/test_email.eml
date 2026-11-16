@@ -1,0 +1,18 @@
+
+From: Security Team <security@example.com>
+To: employee@example.com
+Reply-To: different@example.net
+Subject: Urgent: Verify Your Account
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Authentication-Results: example.com; spf=fail; dkim=fail
+
+Hello,
+
+We noticed unusual activity on your account.
+Please review your account details.
+
+Visit http://192.0.2.10/account for this demonstration.
+
+Thank you,
+Security Team
