@@ -64,8 +64,7 @@ Upload an `.eml` file to view the analysis results.
 - Learn Python-based security automation.
 
   ## Application Screenshot
-
-![Phishing Email Triage Analyzer](phishing-analysis-results.png)
+![Phishing Email Triage Analyzer](email%20analyzer.png)
 
 ## 🔐 Safety & Limitations
 
