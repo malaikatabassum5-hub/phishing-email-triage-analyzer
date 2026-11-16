@@ -36,8 +36,7 @@ def analyze_email(file_bytes):
                 body += part.get_content()
             except Exception:
                 pass
-
-    urls = re.findall(r'https?://[^\s<>"]+', body)
+urls = re.findall(r'https?://[^\s<>"]+', file_bytes.decode("utf-8", errors="ignore"))
 
     findings = []
     score = 0
