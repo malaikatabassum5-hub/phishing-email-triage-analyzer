@@ -1,7 +1,6 @@
 
 import streamlit as st
 import re
-from email import policy
 from email.parser import BytesParser
 from urllib.parse import urlparse
 
@@ -12,7 +11,10 @@ st.set_page_config(
 )
 
 st.title("🛡️ Phishing Email Triage Analyzer")
-st.write("A defensive email investigation tool for identifying suspicious indicators.")
+st.write(
+    "A defensive email investigation tool for identifying suspicious indicators."
+)
+
 
 def analyze_email(file_bytes):
     file_bytes = file_bytes.lstrip()
@@ -31,20 +33,25 @@ def analyze_email(file_bytes):
 
         if filename:
             attachments.append(filename)
+
         elif part.get_content_type() == "text/plain":
             try:
                 body += part.get_content()
             except Exception:
                 pass
-urls = re.findall(r'https?://[^\s<>"]+', file_bytes.decode("utf-8", errors="ignore"))
+
+    # Extract URLs from the email body
+    urls = re.findall(r'https?://[^\s<>"]+', body)
 
     findings = []
     score = 0
 
+    # Check Reply-To mismatch
     if reply_to != "Not available" and reply_to.lower() != sender.lower():
         findings.append("Reply-To differs from the displayed sender.")
         score += 15
 
+    # Check email authentication results
     if "spf=fail" in auth_results.lower():
         findings.append("SPF authentication failure reported.")
         score += 20
@@ -57,14 +64,20 @@ urls = re.findall(r'https?://[^\s<>"]+', file_bytes.decode("utf-8", errors="igno
         findings.append("DMARC authentication failure reported.")
         score += 20
 
+    # Check URLs for IP addresses
     for url in urls:
         domain = urlparse(url).hostname or ""
+
         if re.match(r'\d{1,3}(\.\d{1,3}){3}', domain):
-            findings.append("A URL uses an IP address instead of a domain.")
+            findings.append(
+                "A URL uses an IP address instead of a domain."
+            )
             score += 15
 
     if not findings:
-        findings.append("No configured suspicious indicators were detected.")
+        findings.append(
+            "No configured suspicious indicators were detected."
+        )
 
     score = min(score, 100)
 
@@ -86,6 +99,7 @@ urls = re.findall(r'https?://[^\s<>"]+', file_bytes.decode("utf-8", errors="igno
         "risk": risk
     }
 
+
 uploaded_file = st.file_uploader(
     "Upload an email file (.eml)",
     type=["eml"]
@@ -93,14 +107,12 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file:
     try:
-        st.write("File size:", len(uploaded_file.getvalue()))
-        st.write("File preview:", uploaded_file.getvalue()[:200])
-
         result = analyze_email(uploaded_file.getvalue())
 
         st.subheader("Investigation Results")
 
         col1, col2 = st.columns(2)
+
         col1.metric("Risk Score", f'{result["score"]}/100')
         col2.metric("Risk Level", result["risk"])
 
@@ -109,16 +121,25 @@ if uploaded_file:
         st.write("**Reply-To:**", result["reply_to"])
 
         st.subheader("Security Findings")
+
         for finding in result["findings"]:
             st.write("•", finding)
 
         st.subheader("URLs Found")
-        for url in result["urls"]:
-            st.code(url)
+
+        if result["urls"]:
+            for url in result["urls"]:
+                st.code(url)
+        else:
+            st.write("No URLs found.")
 
         st.subheader("Attachment Names")
-        for filename in result["attachments"]:
-            st.write("📎", filename)
+
+        if result["attachments"]:
+            for filename in result["attachments"]:
+                st.write("📎", filename)
+        else:
+            st.write("No attachments found.")
 
         st.warning(
             "This is a basic educational triage tool. "
@@ -127,4 +148,6 @@ if uploaded_file:
         )
 
     except Exception:
-        st.error("Unable to parse this email file. Please check the .eml format.")
+        st.error(
+            "Unable to parse this email file. Please check the .eml format."
+        )
