@@ -15,7 +15,7 @@ st.title("🛡️ Phishing Email Triage Analyzer")
 st.write("A defensive email investigation tool for identifying suspicious indicators.")
 
 def analyze_email(file_bytes):
-    msg = BytesParser(policy=policy.default).parsebytes(file_bytes)
+    msg = BytesParser().parsebytes(file_bytes)
 
     sender = msg.get("From", "Not available")
     reply_to = msg.get("Reply-To", "Not available")
