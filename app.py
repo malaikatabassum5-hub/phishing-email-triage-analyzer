@@ -1,6 +1,7 @@
 
 import streamlit as st
 import re
+import dns.resolver
 from email.parser import BytesParser
 from urllib.parse import urlparse
 
