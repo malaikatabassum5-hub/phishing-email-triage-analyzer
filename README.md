@@ -89,6 +89,12 @@ Built to develop practical understanding of:
 
 `Email Security` · `DNS` · `SPF` · `DKIM` · `DMARC` · `Phishing Investigation`
 
+
+## In Simple Terms
+
+This is a basic email security analysis tool that I built using Python and Streamlit. It has two main functions: checking an email domain's DNS security configuration and analyzing uploaded `.eml` files for suspicious indicators. It uses simple predefined rules to highlight potential concerns and generate a risk score. The purpose is to make basic email investigation easier while learning practical email security concepts. It is an educational project, not a complete phishing detection or email verification system.
+
+
 ---
 
 <div align="center">
