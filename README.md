@@ -1,83 +1,98 @@
-# 🛡️ Phishing Email Triage Analyzer
 
-A Python-based defensive cybersecurity project designed to inspect email files and identify potentially suspicious indicators.
+<div align="center">
 
-## 📌 Project Overview
+# PHISHING EMAIL
+# TRIAGE ANALYZER
 
-This project explores how a SOC analyst can perform basic email triage by reviewing email headers, URLs, and attachment names.
+**Email Investigation · Domain Security · Defensive Cybersecurity**
 
-The tool accepts `.eml` files and presents findings through a simple Streamlit interface.
+A Python-based tool for examining suspicious emails and identifying basic domain security configuration issues.
 
-## ✨ Current Features
+<br>
 
-- Email header inspection
-- Sender and Reply-To comparison
-- Basic SPF, DKIM, and DMARC result checks
+[Live Demo](https://phishing-email-triage-analyzer-3eht2cclzxahahghphw4b4.streamlit.app/) · [GitHub Repository](https://github.com/malaikatabassum5-hub/phishing-email-triage-analyzer)
+
+</div>
+
+---
+
+## Overview
+
+Phishing emails remain a common cybersecurity threat. This project explores how basic email analysis and domain security checks can help identify suspicious indicators.
+
+The application provides two separate analysis options: an email address DNS check and an `.eml` file investigation.
+
+## Application Preview
+
+![Application Screenshot](email%20analyzer.png)
+
+## Features
+
+### 01 — Email Address Analysis
+
+Examines the domain associated with an entered email address.
+
+- DNS record lookup (A, AAAA and MX)
+- SPF record detection
+- DMARC record detection
+- Domain configuration risk score
+- Findings and configuration warnings
+
+### 02 — Email File Investigation
+
+Allows users to upload an `.eml` file and examine its contents.
+
+- Sender and Reply-To extraction
+- Subject identification
+- SPF, DKIM and DMARC failure indicators
 - URL extraction
-- Basic IP-based URL detection
+- IP-based URL identification
 - Attachment filename extraction
-- Simple risk scoring
-- Investigation findings
+- Heuristic risk scoring
+- Downloadable investigation report
 
-## 🧰 Technologies Used
+## Technology
 
-- Python
-- Streamlit
-- Email Parser
-- Regular Expressions
+| Component | Technology |
+|---|---|
+| Language | Python |
+| Interface | Streamlit |
+| DNS Analysis | dnspython |
+| Email Parsing | Python Email Parser |
+| Pattern Detection | Regular Expressions |
 
-## 📂 Project Structure
-
-```text
-phishing-email-triage-analyzer/
-│
-├── app.py
-├── requirements.txt
-├── README.md
-│
-└── samples/
-    └── test_email.eml
-```
-
-## 🚀 Running the Project
-
-Install the required dependencies:
+## Running Locally
 
 ```bash
+git clone https://github.com/malaikatabassum5-hub/phishing-email-triage-analyzer.git
+
+cd phishing-email-triage-analyzer
+
 pip install -r requirements.txt
-```
 
-Start the application:
-
-```bash
 streamlit run app.py
 ```
 
-Upload an `.eml` file to view the analysis results.
+## Important Limitations
 
-## 🎯 Learning Objectives
+This project is designed for educational and defensive analysis.
 
-- Understand phishing email indicators.
-- Explore email authentication concepts.
-- Practise basic email investigation.
-- Understand introductory SOC triage workflows.
-- Learn Python-based security automation.
+- DNS checks assess domain configuration, not mailbox existence or ownership.
+- A low risk score does not establish that an email address is safe.
+- Email authentication results are read from the supplied message headers and are not independently verified.
+- Risk scores are based on simple predefined rules, not machine learning.
+- Attachments are identified by filename but are not opened or executed.
 
-  ## Application Screenshot
-![Phishing Email Triage Analyzer](email%20analyzer.png)
+## Project Focus
 
-## 🔐 Safety & Limitations
+Built to develop practical understanding of:
 
-This project is intended for educational and defensive security purposes.
+`Email Security` · `DNS` · `SPF` · `DKIM` · `DMARC` · `Phishing Investigation`
 
-- Uses fictional test email data.
-- Does not execute attachments.
-- Does not guarantee that an email is safe.
-- Risk scores are basic indicators, not definitive verdicts.
-- Does not currently perform live threat-intelligence checks or machine-learning classification.
+---
 
-## 👩‍💻 Author
+<div align="center">
 
-**Malaika Tabassum**
+**A hands-on cybersecurity learning project**
 
-Cybersecurity Student | Aspiring SOC Analyst | Blue Team Enthusiast
+</div>
